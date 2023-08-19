@@ -25,8 +25,8 @@ class TaskViewSet(GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        msg = "Task {} added successfully!".format(serializer.validated_data["title"])
+        return Response({"message": msg}, status=status.HTTP_201_CREATED)
     
     def list(self, request):
         serializer = self.get_serializer(self.get_queryset(), many=True)
