@@ -1,6 +1,6 @@
 from django.db import models
 from account.models import CustomUser
-
+from .utils import send_email_to_user
 
 TASK_MODEL_STATUS_CHOICES = [
     (1, "TODO"),
@@ -21,3 +21,12 @@ class Task(models.Model):
                                     default=False, null=False)
     def __str__(self) -> str:
         return '{} - {}'.format(self.title, self.assigned_user.get_full_name())
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.status == 3: # if Task is done
+            send_email_to_user(
+                task_title=self.title,
+                email=self.assigned_user.email
+            )
