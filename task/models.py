@@ -10,7 +10,7 @@ TASK_MODEL_STATUS_CHOICES = [
 
 class Task(models.Model):
     title = models.CharField(max_length=50)
-    description = models.TimeField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     status = models.IntegerField(choices=TASK_MODEL_STATUS_CHOICES,
                                  default=1, null=False,
                                  verbose_name="Task Status")
