@@ -1,8 +1,6 @@
 from rest_framework import serializers
 
 from .models import Task
-from account.serializers import CustomUserReadSerializer
-
 
 class TaskCreateSerializer(serializers.ModelSerializer):
     
