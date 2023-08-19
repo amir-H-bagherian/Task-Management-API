@@ -7,7 +7,9 @@ from .managers import CustomUserManager
 class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="Email address")
-
+    is_deleted = models.BooleanField(verbose_name="Is Deleted",
+                                     default=False, null=False)
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     
