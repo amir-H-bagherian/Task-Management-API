@@ -20,3 +20,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data.get('password'),)
         user.save()
         return user
+    
+class CustomUserReadSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'email')
