@@ -21,6 +21,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
     
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep.pop('password')
+        rep.pop('id')
+        rep['message'] = "User Created Successfully!"
+        return rep
+    
 class CustomUserReadSerializer(serializers.ModelSerializer):
     
     class Meta:
