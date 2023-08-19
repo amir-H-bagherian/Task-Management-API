@@ -19,3 +19,5 @@ class Task(models.Model):
                                       verbose_name="Assigned User")
     is_deleted = models.BooleanField(verbose_name="Is Deleted",
                                     default=False, null=False)
+    def __str__(self) -> str:
+        return '{} - {}'.format(self.title, self.assigned_user.get_full_name())
