@@ -37,6 +37,14 @@ class TaskViewSet(GenericViewSet):
         serializer = self.get_serializer(task)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    def partial_update(self, request, pk):
+        task = self.get_object()
+        serializer = self.get_serializer(instance=task, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        msg = "Task {} updated.".format(task.title)
+        return Response({"message": msg}, status=status.HTTP_200_OK)
+    
     def destroy(self, request, pk):
         task = self.get_object()
         task.delete()
