@@ -24,7 +24,7 @@ class TaskViewSet(GenericViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(assigned_user=request.user)
         msg = "Task {} added successfully!".format(serializer.validated_data["title"])
         return Response({"message": msg}, status=status.HTTP_201_CREATED)
     
@@ -37,7 +37,8 @@ class TaskViewSet(GenericViewSet):
         serializer = self.get_serializer(task)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def destroy(self, request):
+    def destroy(self, request, pk):
         task = self.get_object()
         task.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        msg = "Task deleted successfully!"
+        return Response(data={"message": msg}, status=status.HTTP_204_NO_CONTENT)
