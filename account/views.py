@@ -2,13 +2,19 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CustomUserSerializer
+from rest_framework import generics
 
+from .models import CustomUser
+from .serializers import CustomUserSerializer, CustomUserReadSerializer
 
-class RegisterView(APIView):
     
-    def post(self, request):
-        serializer = CustomUserSerializer(request.data)
-        serializer.is_valid()
-        serializer.save()
-        return Response(data=serializer.validated_data, status=status.HTTP_201_CREATED)
+class CustomUserListCreateView(generics.ListCreateAPIView):
+    permission_classes = []
+    
+    def get_queryset(self):
+        return CustomUser.objects.filter(is_deleted=False)
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CustomUserSerializer
+        return CustomUserReadSerializer
