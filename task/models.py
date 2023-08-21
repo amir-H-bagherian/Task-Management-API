@@ -1,6 +1,6 @@
 from django.db import models
 from account.models import CustomUser
-from .utils import send_email_to_user
+from task import tasks
 
 TASK_MODEL_STATUS_CHOICES = [
     (1, "TODO"),
@@ -26,7 +26,9 @@ class Task(models.Model):
         super().save(*args, **kwargs)
 
         if self.status == 3: # if Task is done
-            send_email_to_user(
+            e = tasks.send_email_to_user.delay(
                 task_title=self.title,
                 email=self.assigned_user.email
             )
+            print('e:', e)
+            print('status of e:', e.status)
