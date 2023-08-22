@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
@@ -28,6 +29,7 @@ class TaskViewSet(GenericViewSet):
         msg = "Task {} added successfully!".format(serializer.validated_data["title"])
         return Response({"message": msg}, status=status.HTTP_201_CREATED)
     
+    @method_decorator(cache_page(60*60*2))
     def list(self, request):
         serializer = self.get_serializer(self.get_queryset(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
